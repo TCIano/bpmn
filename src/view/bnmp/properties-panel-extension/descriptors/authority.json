@@ -1,0 +1,54 @@
+{
+    "name": "Magic",
+    "prefix": "magic",
+    "uri": "http://ntc",
+    "xml": {
+        "tagAlias": "lowerCase"
+    },
+    "associations": [],
+    "types": [
+        {
+            "name": "OtherTaskProps",
+            "extends": ["bpmn:Task"],
+            "properties": [
+                {
+                    "name": "spell",
+                    "isAttr": true,
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "isAttr": true,
+                    "type": "String"
+                }
+            ]
+        },
+        {
+            "name": "TaskProps",
+            "extends": ["bpmn:StartEvent"],
+            "properties": [
+                {
+                    "name": "inputProp",
+                    "isAttr": true,
+                    "type": "String"
+                },
+                {
+                    "name": "inputValue",
+                    "isAttr": true,
+                    "type": "String"
+                }
+            ]
+        },
+        {
+            "name": "UserTaskSelect",
+            "extends": ["bpmn:UserTask"],
+            "properties": [
+                {
+                    "name": "SelectPanel",
+                    "isAttr": true,
+                    "type": "String"
+                }
+            ]
+        }
+    ]
+}
