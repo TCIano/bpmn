@@ -46,7 +46,7 @@
                 {
                     "name": "SelectPanel",
                     "type": "String",
-                    "isAttr": true
+                    "isAttr": false
                 }
             ]
         }
