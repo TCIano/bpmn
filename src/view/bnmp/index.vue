@@ -9,6 +9,8 @@ import { xmlStr } from './xmlData'
 import customPalette from '../bnmp/palette/index'
 import paletteEntries from './config/paletteEntries.js'
 import SelectPanel from '../../components/SelectPanel/index.vue'
+// 汉化文件夹
+import customTranslate from "../../customTranalate/customTranslate.js"
 
 /**
  * 0.x版本 0.33.0
@@ -57,6 +59,11 @@ onMounted(async () => {
     const modules = Modeler.prototype._modules
     const index = modules.findIndex((it: any) => it.paletteProvider)
     modules.splice(index, 1)
+
+    // 汉化配置
+    let customTranslateModule = {
+        translate: ["value", customTranslate],
+    };
     bpmnModeler = new Modeler({
         propertiesPanel: {
             parent: '#properties'
@@ -71,10 +78,11 @@ onMounted(async () => {
             BpmnPropertiesProviderModule,
 
             //  原生扩展面板
-            // CamundaPlatformPropertiesProviderModule,
+            CamundaPlatformPropertiesProviderModule,
             //  自定义面板
             propertiesProviderModule,
-
+            //汉化模板
+            customTranslateModule,
         ],
         moddleExtensions: {
             //如果要在属性面板中维护camunda：XXX属性，则需要此 
@@ -349,15 +357,18 @@ watch(currentElement, (value) => {
 <template>
     <div class='contianr'>
 
-        <a-button @click='createProcess'>新建</a-button>
-        <a-button @click='exportEvent'>XML-->json</a-button>
-        <a-button @click='saveModelDesign'>保存</a-button>
+        <div class='options'>
+            <a-button @click='createProcess'>新建</a-button>
+            <a-button @click='exportEvent'>XML-->json</a-button>
+            <a-button @click='saveModelDesign'>保存</a-button>
+        </div>
         <div ref="canvas" class="canves"></div>
         <div>
             <div id="properties"></div>
             <SelectPanel ref='selectPanel' v-show='false'>
             </SelectPanel>
         </div>
+        <!-- <iframe src="//www.runoob.com"></iframe> -->
     </div>
 </template>
 
@@ -368,6 +379,12 @@ watch(currentElement, (value) => {
     .canves {
         width: 100%;
         height: 100vh;
+    }
+
+    .options {
+        display: flex;
+        flex-direction: column;
+
     }
 
     #properties {

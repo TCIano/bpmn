@@ -19,7 +19,7 @@ import { useService } from 'bpmn-js-properties-panel'
 export default function (element) {
     return [
         {
-            id: 'Select Panel',
+            id: 'SelectPanel',
             element,
             component: Spell,
             // isEdited: isSelectEntryEdited,
@@ -53,12 +53,13 @@ function Spell(props) {
         //     : (element.businessObject.newattr = {})
         // const res = element.businessObject.inputProp
         // return res
-        return processBo.get('magic:SelectPanel') || ''
+        return processBo.get('SelectPanel') || ''
     }
 
     const setValue = value => {
         return modeling.updateProperties(element, {
-            'magic:SelectPanel': value,
+            SelectPanel: value,
+            // inputProp: value,
         })
     }
     const getOptions = () => {

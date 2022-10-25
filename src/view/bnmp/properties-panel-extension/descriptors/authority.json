@@ -13,13 +13,13 @@
             "properties": [
                 {
                     "name": "spell",
-                    "isAttr": true,
-                    "type": "String"
+                    "type": "String",
+                    "isAttr": true
                 },
                 {
                     "name": "value",
-                    "isAttr": true,
-                    "type": "String"
+                    "type": "String",
+                    "isAttr": true
                 }
             ]
         },
@@ -45,8 +45,8 @@
             "properties": [
                 {
                     "name": "SelectPanel",
-                    "isAttr": true,
-                    "type": "String"
+                    "type": "String",
+                    "isAttr": true
                 }
             ]
         }
