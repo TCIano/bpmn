@@ -54,6 +54,8 @@ let jsonString = ref('')
 let svgXxml = ref('')
 let mode = ''
 let bpmnModeler: any = reactive({})
+let isshow = ref(false)
+
 onMounted(async () => {
     //自定义面板
     const modules = Modeler.prototype._modules
@@ -98,22 +100,9 @@ onMounted(async () => {
     //     console.log(e.element);
     // });
 
-    bpmnModeler.on('shape.added', (event) => {
 
-        console.log('----', event)
 
-    })
 
-    bpmnModeler.on('element.changed', function (e) {
-        let element = e.element;
-        // console.log(ele);
-        if (element.type == "bpmn:UserTask") {
-            console.log(selectPanel.value.$el);
-            selectPanel.value.$el.style.display = 'block'
-        } else {
-            selectPanel.value.$el.style.display = 'none'
-        }
-    });
     try {
         const { warings } = await bpmnModeler.importXML(xmlStr)
         addEventBusListerner()
@@ -152,38 +141,58 @@ const addEventBusListerner = () => {
     let id = ''
     const eventBus = bpmnModeler.get('eventBus');
     //单独给进程设置样式
+    console.log(eventBus);
 
 
     // 注册节点事件，eventTypes中可以写多个事件
-    const eventTypes = ['element.click', 'element.hover'];
+    const eventTypes = ['element.click', 'element.changed', 'element.dblclick'];
     eventTypes.forEach((eventType) => {
         eventBus.on(eventType, (e: any) => {
             const { element } = e;
-            // console.log(element);
-
-            if (!element.parent) return;
 
 
-            if (!e || element.type === 'bpmn:Process') {
-                return false;
-            } else {
-                if (eventType === 'element.click') {
-
-                    // 节点点击后想要做的处理
-                    // 此时想要点击节点后，拿到节点实例，通过外部输入更新节点名称
-                    currentElement = element;
-
-                    console.log(selectPanel);
-                    //传递数据
-                    selectPanel.value.currentElement = currentElement
-                    console.log(currentElement.id);
-                    id = currentElement.id
-                    const ele = getShapeById(id)
-                    // console.log(ele);
-                    console.log(currentElement.businessObject);
-                    currentAttr = currentElement.businessObject
+            if (eventType == 'element.changed') {
+                let element = e.element;
+                console.log(element);
+                if (element.type == "bpmn:UserTask") {
+                    console.log(selectPanel.value.$el);
+                    // selectPanel.value.$el.style.display = 'block'
+                    isshow.value = true
+                } else {
+                    // selectPanel.value.$el.style.display = 'none'
+                    isshow.value = false
                 }
             }
+
+            if (eventType === 'element.click') {
+                console.log(element);
+
+                if (element.type !== "bpmn:UserTask") {
+                    isshow.value = false
+                } else {
+                    isshow.value = true
+                }
+
+                // 节点点击后想要做的处理
+                // 此时想要点击节点后，拿到节点实例，通过外部输入更新节点名称
+                currentElement = element;
+
+                console.log(selectPanel);
+                //传递数据
+                selectPanel.value.currentElement = currentElement
+                console.log(currentElement.id);
+                id = currentElement.id
+                const ele = getShapeById(id)
+                if (element.type === "bpmn:UserTask") {
+                    isshow.value = true
+                }
+                // console.log(currentElement.businessObject);
+                currentAttr = currentElement.businessObject
+            }
+            if (eventType == 'element.dblclick') {
+                isshow.value = false
+            }
+
         });
     });
 
@@ -367,7 +376,7 @@ watch(currentElement, (value) => {
         <div ref="canvas" class="canves"></div>
         <div>
             <div id="properties"></div>
-            <SelectPanel ref='selectPanel' v-show='false'>
+            <SelectPanel ref='selectPanel' v-show='isshow'>
             </SelectPanel>
         </div>
         <!-- <iframe src="//www.runoob.com"></iframe> -->
