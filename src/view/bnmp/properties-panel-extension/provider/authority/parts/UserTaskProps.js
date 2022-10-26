@@ -19,16 +19,11 @@ import { useService } from 'bpmn-js-properties-panel'
 export default function (element) {
     return [
         {
-            id: 'SelectPanel',
+            id: 'UserTaskSelectProps',
             element,
             component: Spell,
             // isEdited: isSelectEntryEdited,
         },
-        // {
-        //     id: 'Collapsible',
-        //     element,
-        //     component: Collapsible,
-        // },
     ]
 }
 
@@ -53,12 +48,12 @@ function Spell(props) {
         //     : (element.businessObject.newattr = {})
         // const res = element.businessObject.inputProp
         // return res
-        return processBo.get('SelectPanel') || ''
+        return processBo.get('UserTaskSelectPropsValue') || ''
     }
 
     const setValue = value => {
         return modeling.updateProperties(element, {
-            SelectPanel: value,
+            UserTaskSelectPropsValue: value,
             // inputProp: value,
         })
     }
@@ -81,22 +76,43 @@ function Spell(props) {
     })
 }
 
-//折叠框
-// function Collapsible(props) {
-//     const { element, id } = props
-//     // console.log(element)
-//     const modeling = useService('modeling')
-//     const translate = useService('translate')
-//     const debounce = useService('debounceInput')
-//     const processBo = getBusinessObject(element)
+// 折叠框
+function Collapsible(props) {
+    const { element, id } = props
+    // console.log(element)
+    const modeling = useService('modeling')
+    const translate = useService('translate')
+    const debounce = useService('debounceInput')
+    const processBo = getBusinessObject(element)
+    const getValue = () => {
+        // console.log(element)
+        // const res = element.businessObject.newattr
+        //     ? element.businessObject.newattr.spell
+        //     : (element.businessObject.newattr = {})
+        // const res = element.businessObject.inputProp
+        // return res
+        return processBo.get('UserTaskSelectPropsValue') || ''
+    }
 
-//     return CollapsibleEntry({
-//         id: id,
-//         element: element,
-//         label: translate('折叠框'),
-//         open: true,
-//         remove: () => {
-//             console.log(111)
-//         },
-//     })
-// }
+    const setValue = value => {
+        return modeling.updateProperties(element, {
+            UserTaskSelectPropsValue: value,
+            // inputProp: value,
+        })
+    }
+    // const getOptions = () => {
+    //     return [
+    //         { value: '78', disabled: false, label: '按钮' },
+    //         { value: '79', disabled: false, label: '按钮1' },
+    //     ]
+    // }
+
+    return TextFieldEntry({
+        id: id,
+        element: element,
+        description: translate('请选择'),
+        // label: translate('请选择'),
+
+        debounce: debounce,
+    })
+}

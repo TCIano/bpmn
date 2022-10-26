@@ -14,24 +14,19 @@ export const xmlStr = `<?xml version="1.0" encoding="UTF-8"?>
 
 <bpmn:definitions targetNamespace="http://bpmn.io/schema/bpmn" id="Definitions_0001" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-
 <bpmn:process id="Process_1" isExecutable="true" >
 
 <bpmn:startEvent   />
 
 </bpmn:process>
 
-
 <bpmndi:BPMNDiagram >
 
-
 <bpmndi:BPMNPlane >
-
 
 <bpmndi:BPMNShape >
 
 <dc:Bounds height="36" width="36" y="302" x="232"/>
-
 
 <bpmndi:BPMNLabel>
 
@@ -46,3 +41,6 @@ export const xmlStr = `<?xml version="1.0" encoding="UTF-8"?>
 </bpmndi:BPMNDiagram>
 
 </bpmn:definitions>`
+
+// export const xmlStr = `"<?xml version="1.0" encoding="UTF-8"?>
+// <bpmn:definitions xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:magic="http://ntc" id="Definitions_0001" targetNamespace="http://bpmn.io/schema/bpmn"><bpmn:process id="Process_1" isExecutable="true"><bpmn:startEvent /><bpmn:userTask id="Activity_1ez353v" magic:spell="name" magic:value="value" UserTaskSelectPropsValue="78" /></bpmn:process><bpmndi:BPMNDiagram><bpmndi:BPMNPlane bpmnElement="Process_1"><bpmndi:BPMNShape id="Activity_1ez353v_di" bpmnElement="Activity_1ez353v"><dc:Bounds x="-80" y="-170" width="100" height="80" /></bpmndi:BPMNShape></bpmndi:BPMNPlane></bpmndi:BPMNDiagram></bpmn:definitions>"`

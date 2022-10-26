@@ -104,14 +104,14 @@ function createSelectPanelGroup(element, translate) {
 }
 
 //创建折叠版
-function createCollapsibleGroup(element, translate) {
-    // 属性列表
+// function createCollapsibleGroup(element, translate) {
+//     // 属性列表
 
-    const CollapsibleGroup = {
-        id: 'magic',
-        label: translate('折叠狂'),
-        entries: Collapsible(element),
-    }
+//     const CollapsibleGroup = {
+//         id: 'magic',
+//         label: translate('折叠狂'),
+//         entries: Collapsible(element),
+//     }
 
-    return CollapsibleGroup
-}
+//     return CollapsibleGroup
+// }

@@ -24,18 +24,18 @@
             ]
         },
         {
-            "name": "TaskProps",
+            "name": "StartProps",
             "extends": ["bpmn:StartEvent"],
             "properties": [
                 {
                     "name": "inputProp",
-                    "isAttr": true,
-                    "type": "String"
+                    "type": "String",
+                    "isAttr": false
                 },
                 {
                     "name": "inputValue",
-                    "isAttr": true,
-                    "type": "String"
+                    "type": "String",
+                    "isAttr": false
                 }
             ]
         },
@@ -47,6 +47,16 @@
                     "name": "SelectPanel",
                     "type": "String",
                     "isAttr": false
+                }
+            ]
+        },
+        {
+            "name": "UserTaskSelectProps",
+            "superClass": ["UserTaskSelect"],
+            "properties": [
+                {
+                    "name": "UserTaskSelectPropsValue",
+                    "type": "Properties"
                 }
             ]
         }

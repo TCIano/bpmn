@@ -164,8 +164,16 @@ const rowSelection = computed(() => {
 <style scoped lang='less'>
 .ant-collapse {
     width: 250px;
-    box-shadow: 3px 3px 3px 3px #ccc;
+    box-shadow: 3px 0px 0px 3px #ccc;
+
+    .ant-collapse-item {
+
+        /deep/ .ant-collapse-header {
+            background-color: #fff !important;
+        }
+    }
 }
+
 
 .content {
     display: flex;
