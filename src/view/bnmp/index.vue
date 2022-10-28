@@ -124,6 +124,7 @@ const saveModelDesign = async () => {
     workflowModeBaseBean.json_xml = jsonString
     workflowModeBaseBean.svg_xml = svgXxml
     workflowModeBaseBean.modelId = mode
+    workflowModeExtendBean.processDefinitionId = mode
     console.log('保存成功');
     await saveModelDesignApi(workflowModeBaseBean, workflowModeExtendBean)
 }
@@ -186,7 +187,7 @@ const addEventBusListerner = () => {
                 if (element.type === "bpmn:UserTask") {
                     isshow.value = true
                 }
-                // console.log(currentElement.businessObject);
+                console.log(currentElement.businessObject);
                 currentAttr = currentElement.businessObject
             }
             if (eventType == 'element.dblclick') {
@@ -230,9 +231,9 @@ const createProcess = async () => {
     const { data: {
         modeId
     } } = await createProcessApi({
-        name: '流程测试demo',
+        name: 'demo_7_13',
         organizationNo: "164306494895030272",
-        processKey: "demo_key_1",
+        processKey: "demo_7_13",
         startMode: "AUTOMATIC",
         workflowClassifyId: "30"
     })
@@ -244,11 +245,11 @@ const createProcess = async () => {
 //定义数据
 //流程模型基本信息
 let workflowModeBaseBean = {
-    description: '测试描述',//	string
+    description: '测试描述1',//	string
     json_xml: '',//流程模型JSON定义
     modelId: '',//流程模型id
-    name: '流程测试',//流程模型名称
-    processDefinitionId: 'Process_1',//流程定义ID
+    name: 'demo_7_13',//流程模型名称
+    processDefinitionId: 'Process_8',//流程定义ID
     startMode: 'AUTOMATIC',//流程启动模式 .AUTOMATIC, MANUAL
     svg_xml: '',//流程模型图形定义
 }
@@ -258,7 +259,7 @@ let workflowModeExtendBean = {
     //流程所含空结束事件
     endNoneEventExtendBeanList: [
         {
-            definitionId: '',//SID
+            definitionId: 'sid-asd5g6s9-f8a4-4535-9ea3-08b943fd3884',//SID
             documentation: '',//说明
             name: '',//名称
             processDefinitionId: '',
@@ -273,7 +274,7 @@ let workflowModeExtendBean = {
         //扩展信息
         {
             counterSignType: 'None',//会签模式
-            documentation: '',//说明
+            documentation: '扩展',//说明
             filterRuleDepartmentNoList: [],//过滤规则—需要过滤的部门
             filterRuleOrganizationNoList: [],//过滤规则–需要过滤的机构
             filterRulePostNoList: [],//过滤规则–需要过滤的岗位,
@@ -284,13 +285,13 @@ let workflowModeExtendBean = {
                     jumpNodeName: '',//可跳转节点名称
                 }
             ],//可跳转节点集合
-            nodeDefinitionKey: ""
+            nodeDefinitionKey: "sid-dgd26566-f8a4-4515-9ea3-08b542fd1884"
             ,//节点定义key
             nodeFilterRule: 'NONE_FILTER',//节点过滤规则
-            nodeName: '',//节点名称
+            nodeName: '节点12',//节点名称
             privilegeDepartmentNoList: [],//节点操作权限–部门范围
             privilegePostNoList: [],//节点操作权限–岗位范围
-            privilegeUserNoList: [],//节点操作权限–人员范围
+            privilegeUserNoList: ['165145630388260864'],//节点操作权限–人员范围
             processDefinitionId: '',//所属流程定义id
             processDefinitionKey: '',//所属流程定义key
             sortNo: '',// 排序
@@ -308,9 +309,9 @@ let workflowModeExtendBean = {
     //所属机构编码
     organizationNo: '164306494895030272',
     processDefinitionId: '',//  流程定义ID
-    processDefinitionKey: '122',//流程定义key
+    processDefinitionKey: 'demo_7_13',//流程定义key
     processDeploymentDate: '',//流程发布时间
-    processName: '',//流程名称
+    processName: 'demo_7_13',//流程名称
     processVersion: '',//流程版本号
     serviceNodeExtendBeanList: [
         //流程所含服务节点
@@ -330,10 +331,8 @@ let workflowModeExtendBean = {
     ],
     startNoneEventExtendBeanList: [
         //流程所含空开始事件
-
-
         {
-            definitionId: '',// SID
+            definitionId: 'sid-56dsf612-f8a4-4535-9ea1-04b943fd1874',// SID
             documentation: '',//说明
             name: '',//名称
             processDefinitionId: '',

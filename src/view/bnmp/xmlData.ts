@@ -14,7 +14,7 @@ export const xmlStr = `<?xml version="1.0" encoding="UTF-8"?>
 
 <bpmn:definitions targetNamespace="http://bpmn.io/schema/bpmn" id="Definitions_0001" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-<bpmn:process id="Process_1" isExecutable="true" >
+<bpmn:process id="Process_7" isExecutable="true" >
 
 <bpmn:startEvent   />
 
