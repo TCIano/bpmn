@@ -16,33 +16,33 @@ import customTranslate from "../../customTranalate/customTranslate.js"
  * 0.x版本 0.33.0
  */
 // // // 右侧属性栏
-// import propertiesPanelModule from 'bpmn-js-properties-panel'
+import BpmnPropertiesPanelModule from 'bpmn-js-properties-panel'
 // import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 // // 一个描述的json
-// import 'bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css'
+import 'bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css'
 //自定义json文件
 // import camundaModdleDescriptor from '../../components/properties-panel-extension/descriptors/authority.json'
 //引入自定义的面板
-// import propertiesProviderModule from '../../components/properties-panel-extension/provider/authority'
-// import authorityModdleDescriptor from '../../components/properties-panel-extension/descriptors/authority.json'
+import BpmnPropertiesProviderModule from '../../components/properties-panel-extension/provider/authority'
+import magicModdleDescriptor from '../../components/properties-panel-extension/descriptors/authority.json'
 
 
 /**
  * 1.x版本 1.9.0，导入方式和 0.x版本不一样，包内容也不一样
  */
-import {
-    BpmnPropertiesPanelModule,
-    BpmnPropertiesProviderModule,
-    CamundaPlatformPropertiesProviderModule
-} from 'bpmn-js-properties-panel'
-import 'bpmn-js-properties-panel/dist/assets/properties-panel.css'
-import 'bpmn-js-properties-panel/dist/assets/element-templates.css'
+// import {
+//     BpmnPropertiesPanelModule,
+//     BpmnPropertiesProviderModule,
+//     CamundaPlatformPropertiesProviderModule
+// } from 'bpmn-js-properties-panel'
+// import 'bpmn-js-properties-panel/dist/assets/properties-panel.css'
+// import 'bpmn-js-properties-panel/dist/assets/element-templates.css'
 
 //导入自定义json文件
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda.json'
-import magicModdleDescriptor from './properties-panel-extension/descriptors/authority.json';
-//导入自定义面板
-import propertiesProviderModule from './properties-panel-extension/provider/authority'
+// import magicModdleDescriptor from './properties-panel-extension/descriptors/authority.json';
+// 导入自定义面板
+// import propertiesProviderModule from './properties-panel-extension/provider/authority'
 
 
 import { modelformat, saveModelDesignApi, createProcessApi } from '../../api/ProcessModelController'
@@ -80,9 +80,9 @@ onMounted(async () => {
             BpmnPropertiesProviderModule,
 
             //  原生扩展面板
-            CamundaPlatformPropertiesProviderModule,
+            // CamundaPlatformPropertiesProviderModule,
             //  自定义面板
-            propertiesProviderModule,
+            // propertiesProviderModule,
             //汉化模板
             customTranslateModule,
         ],
@@ -92,7 +92,7 @@ onMounted(async () => {
             //0.x
             // authority: camundaModdleDescriptor
             //1.x
-            magic: magicModdleDescriptor
+            // magic: magicModdleDescriptor
         }
     })
     // const eventBus = bpmnModeler.get('eventBus');
@@ -104,7 +104,9 @@ onMounted(async () => {
 
 
     try {
-        const { warings } = await bpmnModeler.importXML(xmlStr)
+        const res = await bpmnModeler.importXML(xmlStr)
+        console.log(res);
+
         addEventBusListerner()
         // 调整在正中间
         bpmnModeler.get('canvas').zoom('fit-viewport', 'auto')
@@ -124,7 +126,7 @@ const saveModelDesign = async () => {
     workflowModeBaseBean.json_xml = jsonString
     workflowModeBaseBean.svg_xml = svgXxml
     workflowModeBaseBean.modelId = mode
-    workflowModeExtendBean.processDefinitionId = mode
+    // workflowModeExtendBean.processDefinitionId = mode
     console.log('保存成功');
     await saveModelDesignApi(workflowModeBaseBean, workflowModeExtendBean)
 }
@@ -157,11 +159,18 @@ const addEventBusListerner = () => {
                 console.log(element);
                 if (element.type == "bpmn:UserTask") {
                     console.log(selectPanel.value.$el);
+                    workflowModeExtendBean.nodeExtendBeanList[0].nodeDefinitionKey = element.id
                     // selectPanel.value.$el.style.display = 'block'
                     isshow.value = true
                 } else {
                     // selectPanel.value.$el.style.display = 'none'
                     isshow.value = false
+                }
+                if (element.type == "bpmn:StartEvent") {
+                    workflowModeExtendBean.startNoneEventExtendBeanList[0].definitionId = element.id
+                }
+                if (element.type == "bpmn:EndEvent") {
+                    workflowModeExtendBean.endNoneEventExtendBeanList[0].definitionId = element.id
                 }
             }
 
@@ -206,51 +215,67 @@ const getShapeById = (id: string) => {
     const elementRegistry = bpmnModeler.get('elementRegistry');
     return elementRegistry.get(id)
 }
-
-//xml-->json
-const exportEvent = async () => {
-    const resolve = await bpmnModeler.saveXML()
-    console.log(resolve);
-
-    const svgString = await bpmnModeler.saveSVG()
-    // console.log(resolve);
-    console.log(svgString);
-
-    svgXxml = svgString.svg
-
-    const { data } = await modelformat(resolve.xml, 'xml')
-    console.log(data);
-    const res = await modelformat(data, 'json')
-    console.log(res);
-
-    jsonString = data
-}
-
-//新建流程
+let modelId = ''
 const createProcess = async () => {
     const { data: {
         modeId
     } } = await createProcessApi({
-        name: 'demo_7_13',
+        name: 'demo_7_17',
         organizationNo: "164306494895030272",
-        processKey: "demo_7_13",
+        processKey: "demo_7_17",
         startMode: "AUTOMATIC",
-        workflowClassifyId: "30"
+        workflowClassifyId: "22"
     })
     console.log(modeId);
+    modelId = modeId
     mode = modeId
 }
+
+//xml-->json
+const exportEvent = async () => {
+    let resolve = ''
+    await bpmnModeler.saveXML(
+        { format: true }, function (err, xml) {
+            console.log(xml);
+            resolve = xml
+        }
+    )
+    let svgString = ''
+    await bpmnModeler.saveSVG(
+        { format: true }, function (err, svg) {
+            console.log(svg);
+            svgString = svg
+        }
+    )
+    // console.log(resolve);
+
+    svgXxml = svgString
+
+    const { data } = await modelformat(resolve, 'xml')
+    console.log(data);
+    // const res = await modelformat(data, 'json')
+    // console.log(res);
+    console.log(typeof modelId.toString());
+    const newMo = modelId.toString()
+    let newData = data.replace(/"canvas"/g, newMo)
+    console.log(newData);
+
+    jsonString = newData
+}
+
+//新建流程
+
 
 //保存模板
 //定义数据
 //流程模型基本信息
 let workflowModeBaseBean = {
-    description: '测试描述1',//	string
+    description: '测试描述是的',//	string
     json_xml: '',//流程模型JSON定义
     modelId: '',//流程模型id
-    name: 'demo_7_13',//流程模型名称
-    processDefinitionId: 'Process_8',//流程定义ID
-    startMode: 'AUTOMATIC',//流程启动模式 .AUTOMATIC, MANUAL
+    name: 'demo_7_15',//流程模型名称
+    // processDefinitionId: '',//流程定义ID
+    // startMode: '',//流程启动模式 .AUTOMATIC, MANUAL
     svg_xml: '',//流程模型图形定义
 }
 
@@ -259,13 +284,13 @@ let workflowModeExtendBean = {
     //流程所含空结束事件
     endNoneEventExtendBeanList: [
         {
-            definitionId: 'sid-asd5g6s9-f8a4-4535-9ea3-08b943fd3884',//SID
+            definitionId: 'sid-asd5g6s5-f4a4-4735-9ea3-08b943fd3884',//SID
             documentation: '',//说明
             name: '',//名称
-            processDefinitionId: '',
-            processDefinitionKey: '',
+            // processDefinitionId: '',
+            // processDefinitionKey: '',
             processOverNoticeType: '',//结束通知方式
-            workflowExtendId: null,//
+            // workflowExtendId: null,//
         }
 
     ],
@@ -274,57 +299,52 @@ let workflowModeExtendBean = {
         //扩展信息
         {
             counterSignType: 'None',//会签模式
-            documentation: '扩展',//说明
+            documentation: '',//说明
             filterRuleDepartmentNoList: [],//过滤规则—需要过滤的部门
             filterRuleOrganizationNoList: [],//过滤规则–需要过滤的机构
             filterRulePostNoList: [],//过滤规则–需要过滤的岗位,
             jumpNodeList: [
-                {
-                    documentation: '',//描述
-                    jumpNodeDefinitionKey: '',//可跳转节点key
-                    jumpNodeName: '',//可跳转节点名称
-                }
+                // {
+                //     documentation: '',//描述
+                //     jumpNodeDefinitionKey: '',//可跳转节点key
+                //     jumpNodeName: '',//可跳转节点名称
+                // }
             ],//可跳转节点集合
-            nodeDefinitionKey: "sid-dgd26566-f8a4-4515-9ea3-08b542fd1884"
-            ,//节点定义key
+            nodeDefinitionKey: "sid-dgd76566-f1a4-4515-9ea3-08b542fd1584",//节点定义key
             nodeFilterRule: 'NONE_FILTER',//节点过滤规则
-            nodeName: '节点12',//节点名称
+            nodeName: '节点新',//节点名称
             privilegeDepartmentNoList: [],//节点操作权限–部门范围
             privilegePostNoList: [],//节点操作权限–岗位范围
-            privilegeUserNoList: ['165145630388260864'],//节点操作权限–人员范围
-            processDefinitionId: '',//所属流程定义id
-            processDefinitionKey: '',//所属流程定义key
+            privilegeUserNoList: ['164310757490561024'],//节点操作权限–人员范围
+            // processDefinitionId: '',//所属流程定义id
+            // processDefinitionKey: '',//所属流程定义key
             sortNo: '',// 排序
             targetNodeDefinitionKey: '',//当过滤规则是与指定节点操作人员时，存储指定节点的key
             taskAssignType: 'ASSIGN',//ASSIGN, CANDIDATE
             userTaskCreateNoticeType: '',//任务开启通知待办人方式
-            userTaskOverNoticeType: '',//任务完成通知方式
-            workflowExtendId: null,//  所属流程扩展信息id
-
-
-
-
+            // userTaskOverNoticeType: '',//任务完成通知方式
+            // workflowExtendId: null,//  所属流程扩展信息id
         }
     ],
     //所属机构编码
-    organizationNo: '164306494895030272',
-    processDefinitionId: '',//  流程定义ID
-    processDefinitionKey: 'demo_7_13',//流程定义key
-    processDeploymentDate: '',//流程发布时间
-    processName: 'demo_7_13',//流程名称
-    processVersion: '',//流程版本号
+    // organizationNo: '',
+    // processDefinitionId: '',//  流程定义ID
+    processDefinitionKey: 'demo_7_17',//流程定义key
+    // processDeploymentDate: '',//流程发布时间
+    processName: 'demo_7_17',//流程名称
+    // processVersion: '',//流程版本号
     serviceNodeExtendBeanList: [
         //流程所含服务节点
-        {
-            documentation: '',//说明
-            jumpNodeDefinitionKey: '',//处理完成后要跳转的节点key
-            name: '',//名称
-            processDefinitionId: '',//所属流程定义id
-            processDefinitionKey: '',//所属流程定义key
-            serviceNodeDefinitionKey: '',//节点定义key
-            serviceRule: '',//服务节点处理规则
-            workflowExtendId: null,//所属流程扩展信息id
-        }
+        // {
+        //     documentation: '',//说明
+        //     jumpNodeDefinitionKey: '',//处理完成后要跳转的节点key
+        //     name: '',//名称
+        //     processDefinitionId: '',//所属流程定义id
+        //     processDefinitionKey: '',//所属流程定义key
+        //     serviceNodeDefinitionKey: '',//节点定义key
+        //     serviceRule: '',//服务节点处理规则
+        //     workflowExtendId: null,//所属流程扩展信息id
+        // }
     ],
     startDepartmentNoList: [
         //可启动部门编码
@@ -332,12 +352,12 @@ let workflowModeExtendBean = {
     startNoneEventExtendBeanList: [
         //流程所含空开始事件
         {
-            definitionId: 'sid-56dsf612-f8a4-4535-9ea1-04b943fd1874',// SID
+            definitionId: 'sid-56dsf642-f8a4-4575-9ea1-04b944fd1874',// SID
             documentation: '',//说明
             name: '',//名称
-            processDefinitionId: '',
-            processDefinitionKey: '',
-            workflowExtendId: null
+            // processDefinitionId: '',
+            // processDefinitionKey: '',
+            // workflowExtendId: null
         }
     ],
     startPostNoList: [
@@ -348,7 +368,7 @@ let workflowModeExtendBean = {
     startUserNoList: [
         //可启动人员编码
     ],
-    workflowClassifyId: '30',//流程所属分类id
+    workflowClassifyId: '22',//流程所属分类id
 }
 // console.log(currentElement.value.type === 'bpmn:UserTask');
 
