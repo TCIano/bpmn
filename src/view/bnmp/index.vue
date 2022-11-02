@@ -45,7 +45,7 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda.json'
 // import propertiesProviderModule from './properties-panel-extension/provider/authority'
 
 
-import { modelformat, saveModelDesignApi, createProcessApi } from '../../api/ProcessModelController'
+import { modelformat, saveModelDesignApi, createProcessApi, assignDeisgnApi } from '../../api/ProcessModelController'
 //导入自定义面板的页面
 
 
@@ -220,9 +220,9 @@ const createProcess = async () => {
     const { data: {
         modeId
     } } = await createProcessApi({
-        name: 'demo_7_17',
+        name: 'demo_7_18',
         organizationNo: "164306494895030272",
-        processKey: "demo_7_17",
+        processKey: "demo_7_18",
         startMode: "AUTOMATIC",
         workflowClassifyId: "22"
     })
@@ -255,10 +255,13 @@ const exportEvent = async () => {
     console.log(data);
     // const res = await modelformat(data, 'json')
     // console.log(res);
-    console.log(typeof modelId.toString());
-    const newMo = modelId.toString()
-    let newData = data.replace(/"canvas"/g, newMo)
-    console.log(newData);
+    console.log(JSON.parse(data));
+    let json = JSON.parse(data)
+    json.resourceId = modelId.toString()
+    // console.log(typeof modelId.toString());
+    // const newMo = modelId.toString()
+    console.log(JSON.stringify(json));
+    let newData = JSON.stringify(json)
 
     jsonString = newData
 }
@@ -273,7 +276,7 @@ let workflowModeBaseBean = {
     description: '测试描述是的',//	string
     json_xml: '',//流程模型JSON定义
     modelId: '',//流程模型id
-    name: 'demo_7_15',//流程模型名称
+    name: 'demo_7_18',//流程模型名称
     // processDefinitionId: '',//流程定义ID
     // startMode: '',//流程启动模式 .AUTOMATIC, MANUAL
     svg_xml: '',//流程模型图形定义
@@ -284,7 +287,7 @@ let workflowModeExtendBean = {
     //流程所含空结束事件
     endNoneEventExtendBeanList: [
         {
-            definitionId: 'sid-asd5g6s5-f4a4-4735-9ea3-08b943fd3884',//SID
+            definitionId: 'sid-asd5g3s3-f4a4-4735-9ea3-08b943fd3884',//SID
             documentation: '',//说明
             name: '',//名称
             // processDefinitionId: '',
@@ -310,7 +313,7 @@ let workflowModeExtendBean = {
                 //     jumpNodeName: '',//可跳转节点名称
                 // }
             ],//可跳转节点集合
-            nodeDefinitionKey: "sid-dgd76566-f1a4-4515-9ea3-08b542fd1584",//节点定义key
+            nodeDefinitionKey: "sid-dgd76567-f1a4-4515-6ea3-08b542fd1584",//节点定义key
             nodeFilterRule: 'NONE_FILTER',//节点过滤规则
             nodeName: '节点新',//节点名称
             privilegeDepartmentNoList: [],//节点操作权限–部门范围
@@ -329,9 +332,9 @@ let workflowModeExtendBean = {
     //所属机构编码
     // organizationNo: '',
     // processDefinitionId: '',//  流程定义ID
-    processDefinitionKey: 'demo_7_17',//流程定义key
+    processDefinitionKey: 'demo_7_18',//流程定义key
     // processDeploymentDate: '',//流程发布时间
-    processName: 'demo_7_17',//流程名称
+    processName: 'demo_7_18',//流程名称
     // processVersion: '',//流程版本号
     serviceNodeExtendBeanList: [
         //流程所含服务节点
@@ -352,7 +355,7 @@ let workflowModeExtendBean = {
     startNoneEventExtendBeanList: [
         //流程所含空开始事件
         {
-            definitionId: 'sid-56dsf642-f8a4-4575-9ea1-04b944fd1874',// SID
+            definitionId: 'sid-29dsf642-f8a4-4575-9ea1-04b944fd1874',// SID
             documentation: '',//说明
             name: '',//名称
             // processDefinitionId: '',
@@ -382,6 +385,11 @@ watch(currentElement, (value) => {
 }, {
     immediate: true,
 })
+
+//发布流程
+const assignDesign = async () => {
+    await assignDeisgnApi(modelId)
+}
 </script>
 
 <template>
@@ -391,6 +399,7 @@ watch(currentElement, (value) => {
             <a-button @click='createProcess'>新建</a-button>
             <a-button @click='exportEvent'>XML-->json</a-button>
             <a-button @click='saveModelDesign'>保存</a-button>
+            <a-button @click='assignDesign'>发布</a-button>
         </div>
         <div ref="canvas" class="canves"></div>
         <div>

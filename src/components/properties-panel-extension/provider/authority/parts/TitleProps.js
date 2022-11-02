@@ -10,7 +10,7 @@ export default function (group, element) {
                 id: 'title',
                 description: '权限的标题',
                 label: '标题',
-                modelProperty: 'title',
+                modelProperty: 'Authtitle',
             })
         )
     }

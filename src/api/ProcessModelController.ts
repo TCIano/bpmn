@@ -69,3 +69,10 @@ export const createProcessApi = data => {
         data,
     })
 }
+
+export const assignDeisgnApi = (id: any) => {
+    return request({
+        method: 'POST',
+        url: `/web/biz/processModel/deployModel?modelId=${id}`,
+    })
+}
